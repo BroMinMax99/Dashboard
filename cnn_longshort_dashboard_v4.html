@@ -1,0 +1,2581 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <title>FICC_채권운용부 전략펀드</title>-->
+<!--    &lt;!&ndash; Chart.js &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;bg: #f5f7fb;-->
+<!--            &#45;&#45;card-bg: #ffffff;-->
+<!--            &#45;&#45;accent: #2563eb;-->
+<!--            &#45;&#45;accent-soft: #dbeafe;-->
+<!--            &#45;&#45;text-main: #1f2933;-->
+<!--            &#45;&#45;text-sub: #6b7280;-->
+<!--            &#45;&#45;border-soft: #e5e7eb;-->
+<!--            &#45;&#45;danger: #ef4444;-->
+<!--            &#45;&#45;success: #16a34a;-->
+<!--            &#45;&#45;shadow-soft: 0 12px 25px rgba(15, 23, 42, 0.06);-->
+<!--            &#45;&#45;radius-lg: 18px;-->
+<!--        }-->
+
+<!--        * {-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            margin: 0;-->
+<!--            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;-->
+<!--            background: var(&#45;&#45;bg);-->
+<!--            color: var(&#45;&#45;text-main);-->
+<!--        }-->
+
+<!--        .hidden {-->
+<!--            display: none !important;-->
+<!--        }-->
+
+<!--        /* 로그인 페이지 */-->
+<!--        #login-page {-->
+<!--            min-height: 100vh;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            background: radial-gradient(circle at top, #e0f2fe, #f5f7fb 60%);-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .login-card {-->
+<!--            background: var(&#45;&#45;card-bg);-->
+<!--            border-radius: 24px;-->
+<!--            box-shadow: var(&#45;&#45;shadow-soft);-->
+<!--            padding: 40px 36px;-->
+<!--            width: 100%;-->
+<!--            max-width: 420px;-->
+<!--        }-->
+
+<!--        .login-logo {-->
+<!--            font-size: 24px;-->
+<!--            font-weight: 800;-->
+<!--            color: var(&#45;&#45;accent);-->
+<!--            letter-spacing: 0.06em;-->
+<!--            margin-bottom: 8px;-->
+<!--        }-->
+
+<!--        .login-subtitle {-->
+<!--            font-size: 14px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            margin-bottom: 28px;-->
+<!--        }-->
+
+<!--        .form-group {-->
+<!--            margin-bottom: 18px;-->
+<!--        }-->
+
+<!--        .form-label {-->
+<!--            font-size: 13px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            margin-bottom: 6px;-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        .form-input {-->
+<!--            width: 100%;-->
+<!--            padding: 10px 12px;-->
+<!--            border-radius: 12px;-->
+<!--            border: 1px solid var(&#45;&#45;border-soft);-->
+<!--            font-size: 14px;-->
+<!--            outline: none;-->
+<!--            transition: border-color 0.15s, box-shadow 0.15s;-->
+<!--        }-->
+
+<!--        .form-input:focus {-->
+<!--            border-color: var(&#45;&#45;accent);-->
+<!--            box-shadow: 0 0 0 1px var(&#45;&#45;accent-soft);-->
+<!--        }-->
+
+<!--        .login-btn {-->
+<!--            margin-top: 10px;-->
+<!--            width: 100%;-->
+<!--            padding: 11px 14px;-->
+<!--            border-radius: 999px;-->
+<!--            border: none;-->
+<!--            font-size: 15px;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            background: var(&#45;&#45;accent);-->
+<!--            color: #fff;-->
+<!--            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);-->
+<!--            transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s;-->
+<!--        }-->
+
+<!--        .login-btn:hover {-->
+<!--            transform: translateY(-1px);-->
+<!--            background: #1d4ed8;-->
+<!--            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.45);-->
+<!--        }-->
+
+<!--        .login-helper {-->
+<!--            margin-top: 10px;-->
+<!--            font-size: 12px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--        }-->
+
+<!--        .login-helper span {-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;accent);-->
+<!--        }-->
+
+<!--        /* 앱 전체 레이아웃 */-->
+<!--        #app {-->
+<!--            min-height: 100vh;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--        }-->
+
+<!--        header {-->
+<!--            background: #ffffff;-->
+<!--            border-bottom: 1px solid #e5e7eb;-->
+<!--            padding: 10px 24px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: space-between;-->
+<!--            position: sticky;-->
+<!--            top: 0;-->
+<!--            z-index: 10;-->
+<!--        }-->
+
+<!--        .brand {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 8px;-->
+<!--        }-->
+
+<!--        .brand-logo {-->
+<!--            width: 28px;-->
+<!--            height: 28px;-->
+<!--            border-radius: 10px;-->
+<!--            background: linear-gradient(135deg, #2563eb, #38bdf8);-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            color: #fff;-->
+<!--            font-weight: 800;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+
+<!--        .brand-text-main {-->
+<!--            font-weight: 700;-->
+<!--            font-size: 18px;-->
+<!--        }-->
+
+<!--        .brand-text-sub {-->
+<!--            font-size: 11px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--        }-->
+
+<!--        .nav-menu {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .nav-btn {-->
+<!--            padding: 7px 14px;-->
+<!--            border-radius: 999px;-->
+<!--            border: none;-->
+<!--            background: transparent;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            font-size: 13px;-->
+<!--            cursor: pointer;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 6px;-->
+<!--            transition: background 0.15s, color 0.15s;-->
+<!--        }-->
+
+<!--        .nav-btn.active {-->
+<!--            background: var(&#45;&#45;accent-soft);-->
+<!--            color: var(&#45;&#45;accent);-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .user-pill {-->
+<!--            font-size: 12px;-->
+<!--            padding: 6px 10px;-->
+<!--            border-radius: 999px;-->
+<!--            background: #eff6ff;-->
+<!--            color: #1e40af;-->
+<!--        }-->
+
+<!--        main {-->
+<!--            padding: 18px 24px 26px;-->
+<!--        }-->
+
+<!--        .grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));-->
+<!--            gap: 14px;-->
+<!--        }-->
+
+<!--        .card {-->
+<!--            background: var(&#45;&#45;card-bg);-->
+<!--            border-radius: var(&#45;&#45;radius-lg);-->
+<!--            box-shadow: var(&#45;&#45;shadow-soft);-->
+<!--            padding: 16px 16px 18px;-->
+<!--        }-->
+
+<!--        .card-header {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: baseline;-->
+<!--            margin-bottom: 8px;-->
+<!--        }-->
+
+<!--        .card-title {-->
+<!--            font-size: 14px;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .card-subtitle {-->
+<!--            font-size: 12px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--        }-->
+
+<!--        .metric-value {-->
+<!--            font-size: 22px;-->
+<!--            font-weight: 700;-->
+<!--            margin-top: 4px;-->
+<!--        }-->
+
+<!--        .metric-subtext {-->
+<!--            font-size: 12px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            margin-top: 6px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 6px;-->
+<!--        }-->
+
+<!--        .metric-badge {-->
+<!--            font-size: 11px;-->
+<!--            padding: 2px 6px;-->
+<!--            border-radius: 999px;-->
+<!--            background: #ecfdf3;-->
+<!--            color: var(&#45;&#45;success);-->
+<!--            margin-left: 6px;-->
+<!--        }-->
+
+<!--        .metric-badge.neg {-->
+<!--            background: #fef2f2;-->
+<!--            color: var(&#45;&#45;danger);-->
+<!--        }-->
+
+<!--        .chart-container {-->
+<!--            margin-top: 8px;-->
+<!--            height: 260px;-->
+<!--        }-->
+
+<!--        .chart-container-small {-->
+<!--            margin-top: 8px;-->
+<!--            height: 220px;-->
+<!--        }-->
+
+<!--        .section-title {-->
+<!--            font-size: 16px;-->
+<!--            font-weight: 700;-->
+<!--            margin: 4px 0 10px;-->
+<!--        }-->
+
+<!--        .subsection-title {-->
+<!--            font-size: 13px;-->
+<!--            font-weight: 600;-->
+<!--            margin-bottom: 6px;-->
+<!--        }-->
+
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            font-size: 12px;-->
+<!--        }-->
+
+<!--        th, td {-->
+<!--            padding: 6px 8px;-->
+<!--            border-bottom: 1px solid #f3f4f6;-->
+<!--            text-align: left;-->
+<!--        }-->
+
+<!--        th {-->
+<!--            font-size: 11px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        tr:last-child td {-->
+<!--            border-bottom: none;-->
+<!--        }-->
+
+<!--        .tag {-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            padding: 2px 7px;-->
+<!--            border-radius: 999px;-->
+<!--            font-size: 10px;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .tag-long {-->
+<!--            background: #ecfdf3;-->
+<!--            color: #15803d;-->
+<!--        }-->
+
+<!--        .tag-short {-->
+<!--            background: #fef2f2;-->
+<!--            color: #b91c1c;-->
+<!--        }-->
+
+<!--        .tag-neutral {-->
+<!--            background: #e5e7eb;-->
+<!--            color: #374151;-->
+<!--        }-->
+
+<!--        .position-tag {-->
+<!--            font-size: 11px;-->
+<!--            padding: 2px 8px;-->
+<!--        }-->
+
+<!--        .prob-high {-->
+<!--            color: #15803d;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .prob-low {-->
+<!--            color: #b91c1c;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        /* 🔥 Heatmap (열/컬럼 스타일) */-->
+<!--        .heatmap-grid {-->
+<!--            margin-top: 10px;-->
+<!--            display: flex;-->
+<!--            align-items: flex-end;-->
+<!--            gap: 8px;-->
+<!--            overflow-x: auto;-->
+<!--            padding-bottom: 4px;-->
+<!--        }-->
+
+<!--        .hm-col {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            width: 26px;-->
+<!--            flex-shrink: 0;-->
+<!--            font-size: 10px;-->
+<!--        }-->
+
+<!--        .hm-bar-vertical-wrapper {-->
+<!--            width: 100%;-->
+<!--            height: 110px; /* 전체 높이 */-->
+<!--            border-radius: 999px;-->
+<!--            background: #e5e7eb;-->
+<!--            display: flex;-->
+<!--            align-items: flex-end;-->
+<!--            justify-content: center;-->
+<!--            overflow: hidden;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .hm-bar-vertical-fill {-->
+<!--            width: 100%;-->
+<!--            border-radius: 999px 999px 0 0;-->
+<!--            transition: height 0.3s ease;-->
+<!--        }-->
+
+<!--        .hm-col-ticker {-->
+<!--            margin-top: 4px;-->
+<!--            font-size: 10px;-->
+<!--            color: var(&#45;&#45;text-main);-->
+<!--            white-space: nowrap;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--.heatmap-legend {-->
+<!--    margin-top: 10px;-->
+<!--    font-size: 11px;-->
+<!--    color: var(&#45;&#45;text-sub);-->
+<!--    display: flex;-->
+<!--    flex-direction: column;      /* ⬅ 세로 정렬 */-->
+<!--    align-items: stretch;-->
+<!--    gap: 4px;                    /* 바와 레이블 간 간격 */-->
+<!--}-->
+
+<!--/* 바는 가로 전체 */-->
+<!--.heatmap-legend-bar {-->
+<!--    width: 100%;-->
+<!--    height: 8px;-->
+<!--    border-radius: 999px;-->
+<!--    background: linear-gradient(90deg, #ef4444, #fbbf24, #22c55e);-->
+<!--}-->
+
+<!--/* 레이블을 바와 같은 폭으로, 좌/중/우 정렬 */-->
+<!--.heatmap-legend-labels {-->
+<!--    display: flex;-->
+<!--    justify-content: space-between;-->
+<!--    width: 100%;-->
+<!--}-->
+
+<!--.heatmap-legend-labels span {-->
+<!--    font-size: 10px;-->
+<!--}-->
+
+
+<!--        /* S&P 카드 상단 지표 */-->
+<!--        .metric-summary-row {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            flex-wrap: wrap;-->
+<!--            margin-top: 4px;-->
+<!--            margin-bottom: 6px;-->
+<!--        }-->
+
+<!--        .metric-summary-item {-->
+<!--            flex: 1 1 120px;-->
+<!--            min-width: 120px;-->
+<!--            padding: 8px 10px;-->
+<!--            border-radius: 12px;-->
+<!--            background: #f9fafb;-->
+<!--            border: 1px solid #e5e7eb;-->
+<!--        }-->
+
+<!--        .metric-summary-label {-->
+<!--            font-size: 11px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            margin-bottom: 2px;-->
+<!--        }-->
+
+<!--        .metric-summary-value {-->
+<!--            font-size: 14px;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .metric-summary-value.positive {-->
+<!--            color: #15803d;-->
+<!--        }-->
+
+<!--        .metric-summary-value.negative {-->
+<!--            color: #b91c1c;-->
+<!--        }-->
+
+<!--        /* 섹션 페이지 전환 */-->
+<!--        .page-section {-->
+<!--            display: none;-->
+<!--        }-->
+<!--        .page-section.active {-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        /* 종목 탭 */-->
+<!--        .stock-tabs {-->
+<!--            display: flex;-->
+<!--            gap: 8px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        .stock-tab-btn {-->
+<!--            padding: 6px 10px;-->
+<!--            font-size: 12px;-->
+<!--            border-radius: 999px;-->
+<!--            border: 1px solid var(&#45;&#45;border-soft);-->
+<!--            background: #f9fafb;-->
+<!--            cursor: pointer;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--            transition: background 0.15s, color 0.15s, border-color 0.15s;-->
+<!--        }-->
+
+<!--        .stock-tab-btn.active {-->
+<!--            background: var(&#45;&#45;accent-soft);-->
+<!--            color: var(&#45;&#45;accent);-->
+<!--            border-color: var(&#45;&#45;accent);-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        /* 🔔 Notification Center 스타일 */-->
+<!--        .notif-filter-bar {-->
+<!--            display: flex;-->
+<!--            gap: 8px;-->
+<!--            align-items: center;-->
+<!--            margin-bottom: 10px;-->
+<!--            flex-wrap: wrap;-->
+<!--            font-size: 12px;-->
+<!--        }-->
+
+<!--        .notif-chip {-->
+<!--            padding: 4px 9px;-->
+<!--            border-radius: 999px;-->
+<!--            border: 1px solid var(&#45;&#45;border-soft);-->
+<!--            background: #f9fafb;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 11px;-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--        }-->
+
+<!--        .notif-chip.active {-->
+<!--            background: var(&#45;&#45;accent-soft);-->
+<!--            color: var(&#45;&#45;accent);-->
+<!--            border-color: var(&#45;&#45;accent);-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .notif-list {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            gap: 8px;-->
+<!--            margin-top: 6px;-->
+<!--        }-->
+
+<!--        .notif-item {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            padding: 10px 11px;-->
+<!--            border-radius: 12px;-->
+<!--            background: #f9fafb;-->
+<!--            border: 1px solid #e5e7eb;-->
+<!--            align-items: flex-start;-->
+<!--            font-size: 12px;-->
+<!--        }-->
+
+<!--        .notif-dot {-->
+<!--            width: 8px;-->
+<!--            height: 8px;-->
+<!--            border-radius: 999px;-->
+<!--            margin-top: 5px;-->
+<!--            flex-shrink: 0;-->
+<!--        }-->
+
+<!--        .notif-dot.unread {-->
+<!--            background: #2563eb;-->
+<!--        }-->
+
+<!--        .notif-dot.read {-->
+<!--            background: #d1d5db;-->
+<!--        }-->
+
+<!--        .notif-content {-->
+<!--            flex: 1;-->
+<!--        }-->
+
+<!--        .notif-title-row {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 6px;-->
+<!--            margin-bottom: 2px;-->
+<!--        }-->
+
+<!--        .notif-title {-->
+<!--            font-weight: 600;-->
+<!--            font-size: 12px;-->
+<!--        }-->
+
+<!--        .notif-tag {-->
+<!--            padding: 2px 6px;-->
+<!--            border-radius: 999px;-->
+<!--            font-size: 10px;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .notif-tag-strategy {-->
+<!--            background: #eef2ff;-->
+<!--            color: #3730a3;-->
+<!--        }-->
+
+<!--        .notif-tag-portfolio {-->
+<!--            background: #ecfdf3;-->
+<!--            color: #166534;-->
+<!--        }-->
+
+<!--        .notif-tag-system {-->
+<!--            background: #fef2f2;-->
+<!--            color: #b91c1c;-->
+<!--        }-->
+
+<!--        .notif-tag-model {-->
+<!--            background: #e0f2fe;-->
+<!--            color: #0369a1;-->
+<!--        }-->
+
+<!--        .notif-message {-->
+<!--            color: var(&#45;&#45;text-sub);-->
+<!--        }-->
+
+<!--        .notif-meta {-->
+<!--            margin-top: 3px;-->
+<!--            font-size: 11px;-->
+<!--            color: #9ca3af;-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            header {-->
+<!--                flex-wrap: wrap;-->
+<!--                gap: 8px;-->
+<!--            }-->
+
+<!--            main {-->
+<!--                padding: 14px;-->
+<!--            }-->
+
+<!--            .card {-->
+<!--                padding: 14px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    &lt;!&ndash; 로그인 페이지 &ndash;&gt;-->
+<!--    <div id="login-page">-->
+<!--        <div class="login-card">-->
+<!--            <div class="login-logo">FICC_채권운용부 전략펀드</div>-->
+<!--            <div class="login-subtitle">-->
+<!--                TF, MACD, RSI 기반 전략펀드<br />-->
+<!--                데모 로그인을 통해 화면 구성을 확인해보세요.-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label class="form-label">이메일</label>-->
+<!--                <input id="email-input" type="email" class="form-input" placeholder="you@example.com" value="demo@alpha.ai" />-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="form-label">비밀번호</label>-->
+<!--                <input id="password-input" type="password" class="form-input" placeholder="••••••••" value="demopass" />-->
+<!--            </div>-->
+
+<!--            <button class="login-btn" id="login-btn">로그인</button>-->
+<!--            <div class="login-helper">-->
+<!--                실제 인증 없이 <span>데모 모드</span>로 대시보드가 열립니다.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 앱 영역 &ndash;&gt;-->
+<!--    <div id="app" class="hidden">-->
+<!--        <header>-->
+<!--            <div class="brand">-->
+<!--                <div class="brand-logo">α</div>-->
+<!--                <div>-->
+<!--                    <div class="brand-text-main">채권운용부 전략펀드</div>-->
+<!--                    <div class="brand-text-sub">2363, 2036</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <nav class="nav-menu">-->
+<!--                <button class="nav-btn active" data-target="dashboard-section">RSI 전략</button>-->
+<!--                <button class="nav-btn" data-target="stocks-section">MACD 전략</button>-->
+<!--                <button class="nav-btn" data-target="notifications-section">TF 전략</button>-->
+<!--            </nav>-->
+<!--            <div class="user-pill" id="user-pill">-->
+<!--                demo@alpha.ai-->
+<!--            </div>-->
+<!--        </header>-->
+
+<!--        <main>-->
+<!--            &lt;!&ndash; 대시보드 섹션 &ndash;&gt;-->
+<!--            <section id="dashboard-section" class="page-section active">-->
+<!--                <div class="section-title">오늘의 전략 요약</div>-->
+<!--                <div class="grid">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">금일 포지션</div>-->
+<!--                            <div class="card-subtitle">계약수: 80</div>-->
+<!--                        </div>-->
+<!--                        <div id="positionValue" class="metric-value">데이터 없음</div>-->
+<!--                        <div class="metric-subtext">-->
+<!--                            현재 포지션-->
+<!--                            <span id="positionPrevValue" class="tag tag-neutral position-tag">데이터 없음</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">진입 가격</div>-->
+<!--                        </div>-->
+<!--                        <div id="entryPriceValue" class="metric-value">데이터 없음</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">월손익</div>-->
+<!--                        </div>-->
+<!--                        <div class="metric-value">-->
+<!--                            +3.1%-->
+<!--                            <span class="metric-badge">계약수 80 기준</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">연손익</div>-->
+<!--                            <div class="card-subtitle">2025년</div>-->
+<!--                        </div>-->
+<!--                        <div class="metric-value">-->
+<!--                            78 / 100-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="grid" style="margin-top: 16px;">-->
+<!--                    <div class="card" style="grid-column: span 2; min-width: 260px;">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">실제 종가 vs 추세 예측값</div>-->
+<!--                            <div class="card-subtitle">99999 / 정렬 컬럼 기반 차트</div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; 상단 지표 세 개 &ndash;&gt;-->
+<!--                        <div class="metric-summary-row">-->
+<!--                            <div class="metric-summary-item">-->
+<!--                                <div class="metric-summary-label">샤프지수 (전략)</div>-->
+<!--                                <div id="sharpeMetric" class="metric-summary-value">-</div>-->
+<!--                            </div>-->
+<!--                            <div class="metric-summary-item">-->
+<!--                                <div class="metric-summary-label">연평균 수익률 (전략)</div>-->
+<!--                                <div id="annReturnMetric" class="metric-summary-value positive">-</div>-->
+<!--                            </div>-->
+<!--                            <div class="metric-summary-item">-->
+<!--                                <div class="metric-summary-label">최대하락폭 MDD (전략)</div>-->
+<!--                                <div id="mddMetric" class="metric-summary-value negative">-</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="chart-container">-->
+<!--                            <canvas id="spComparisonChart"></canvas>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">롱 포트폴리오 (상승 확률 높은 종목)</div>-->
+<!--                        </div>-->
+<!--                        <div class="card-subtitle" style="margin-bottom: 6px;">-->
+<!--                            prob_up ≥ 0.60 &nbsp;·&nbsp; 변동성 과도 종목 제외-->
+<!--                        </div>-->
+<!--                        <table>-->
+<!--                            <thead>-->
+<!--                                <tr>-->
+<!--                                    <th>티커</th>-->
+<!--                                    <th>상승확률</th>-->
+<!--                                    <th>예상수익률(5D)</th>-->
+<!--                                    <th>비중</th>-->
+<!--                                </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody id="long-table-body">-->
+<!--                                &lt;!&ndash; JS에서 채움 &ndash;&gt;-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <div class="card-title">숏 포트폴리오 (하락 확률 높은 종목)</div>-->
+<!--                        </div>-->
+<!--                        <div class="card-subtitle" style="margin-bottom: 6px;">-->
+<!--                            prob_up ≤ 0.40 &nbsp;·&nbsp; 유동성 부족 종목 제외-->
+<!--                        </div>-->
+<!--                        <table>-->
+<!--                            <thead>-->
+<!--                                <tr>-->
+<!--                                    <th>티커</th>-->
+<!--                                    <th>상승확률</th>-->
+<!--                                    <th>예상수익률(5D)</th>-->
+<!--                                    <th>비중</th>-->
+<!--                                </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody id="short-table-body">-->
+<!--                                &lt;!&ndash; JS에서 채움 &ndash;&gt;-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="card" style="margin-top: 16px;">-->
+<!--                    <div class="card-header">-->
+<!--                        <div class="card-title">시장 예측 Heatmap (세로 막대 · Demo)</div>-->
+<!--                        <div class="card-subtitle">종목별 상승 확률(prob_up)을 높이·색으로 표현</div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; 🔥 세로 막대 Heatmap &ndash;&gt;-->
+<!--                    <div id="heatmap-list" class="heatmap-grid">-->
+<!--                        &lt;!&ndash; JS에서 생성 &ndash;&gt;-->
+<!--                    </div>-->
+
+<!--                    <div class="heatmap-legend">-->
+<!--                        <div class="heatmap-legend-bar"></div>-->
+<!--                        <div class="heatmap-legend-labels">-->
+<!--                            <span>낮은 상승확률</span>-->
+<!--                            <span>중립</span>-->
+<!--                            <span>높은 상승확률</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
+
+<!--            &lt;!&ndash; 종목별 OHLC 섹션 &ndash;&gt;-->
+<!--            <section id="stocks-section" class="page-section">-->
+<!--                <div class="section-title">종목별 OHLC & Volume (Demo 데이터)</div>-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <div class="card-title">종목 선택</div>-->
+<!--                        <div class="card-subtitle">실제 구현 시 종목 검색/필터 추가 가능</div>-->
+<!--                    </div>-->
+<!--                    <div class="stock-tabs">-->
+<!--                        <button class="stock-tab-btn active" data-stock="AAPL">AAPL</button>-->
+<!--                        <button class="stock-tab-btn" data-stock="MSFT">MSFT</button>-->
+<!--                    </div>-->
+
+<!--                    <div id="stock-charts-AAPL">-->
+<!--                        <div class="subsection-title">AAPL OHLC + 예측 확률 (Demo)</div>-->
+<!--                        <div class="chart-container-small">-->
+<!--                            <canvas id="ohlcChartAAPL"></canvas>-->
+<!--                        </div>-->
+<!--                        <div class="subsection-title" style="margin-top: 10px;">AAPL 거래량 (Demo)</div>-->
+<!--                        <div class="chart-container-small">-->
+<!--                            <canvas id="volumeChartAAPL"></canvas>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div id="stock-charts-MSFT" class="hidden">-->
+<!--                        <div class="subsection-title">MSFT OHLC + 예측 확률 (Demo)</div>-->
+<!--                        <div class="chart-container-small">-->
+<!--                            <canvas id="ohlcChartMSFT"></canvas>-->
+<!--                        </div>-->
+<!--                        <div class="subsection-title" style="margin-top: 10px;">MSFT 거래량 (Demo)</div>-->
+<!--                        <div class="chart-container-small">-->
+<!--                            <canvas id="volumeChartMSFT"></canvas>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
+
+<!--            &lt;!&ndash; 알림센터 섹션 &ndash;&gt;-->
+<!--            <section id="notifications-section" class="page-section">-->
+<!--                <div class="section-title">알림센터 (Notification Center)</div>-->
+
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <div class="card-title">오늘의 주요 알림</div>-->
+<!--                        <div class="card-subtitle">전략 / 포트폴리오 / 모델 / 시스템 이벤트 모음</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="notif-filter-bar">-->
+<!--                        <span style="font-size:12px;color:var(&#45;&#45;text-sub);">유형 필터:</span>-->
+<!--                        <button class="notif-chip active" data-filter="all">전체</button>-->
+<!--                        <button class="notif-chip" data-filter="strategy">전략</button>-->
+<!--                        <button class="notif-chip" data-filter="portfolio">포트폴리오</button>-->
+<!--                        <button class="notif-chip" data-filter="model">모델</button>-->
+<!--                        <button class="notif-chip" data-filter="system">시스템</button>-->
+<!--                    </div>-->
+
+<!--                    <div class="notif-list" id="notif-list">-->
+<!--                        <div class="notif-item" data-type="strategy">-->
+<!--                            <div class="notif-dot unread"></div>-->
+<!--                            <div class="notif-content">-->
+<!--                                <div class="notif-title-row">-->
+<!--                                    <div class="notif-title">롱숏 전략 리밸런싱 신호</div>-->
+<!--                                    <span class="notif-tag notif-tag-strategy">전략</span>-->
+<!--                                </div>-->
+<!--                                <div class="notif-message">-->
+<!--                                    CNN 예측에 따라 TSLA 숏 비중을 5% → 8%로 확대하는 것이 유리합니다.-->
+<!--                                </div>-->
+<!--                                <div class="notif-meta">5분 전 · 기준: prob_up, ret5, 변동성</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="notif-item" data-type="portfolio">-->
+<!--                            <div class="notif-dot unread"></div>-->
+<!--                            <div class="notif-content">-->
+<!--                                <div class="notif-title-row">-->
+<!--                                    <div class="notif-title">포트폴리오 손실 경고 (Soft)</div>-->
+<!--                                    <span class="notif-tag notif-tag-portfolio">포트폴리오</span>-->
+<!--                                </div>-->
+<!--                                <div class="notif-message">-->
+<!--                                    현재 Long 포트폴리오의 MDD가 -4.2%에 도달했습니다. 리스크 한도(-5%)에 근접 중입니다.-->
+<!--                                </div>-->
+<!--                                <div class="notif-meta">18분 전 · ALPHA-CNN Risk Engine</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="notif-item" data-type="model">-->
+<!--                            <div class="notif-dot read"></div>-->
+<!--                            <div class="notif-content">-->
+<!--                                <div class="notif-title-row">-->
+<!--                                    <div class="notif-title">모델 재학습 완료</div>-->
+<!--                                    <span class="notif-tag notif-tag-model">모델</span>-->
+<!--                                </div>-->
+<!--                                <div class="notif-message">-->
+<!--                                    cnn_v2(L5_R5, 32×15) 재학습이 완료되었습니다. 검증 Accuracy 65.8% → 68.1% 향상.-->
+<!--                                </div>-->
+<!--                                <div class="notif-meta">어제 · 데이터 구간: 2010-2024</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="notif-item" data-type="system">-->
+<!--                            <div class="notif-dot read"></div>-->
+<!--                            <div class="notif-content">-->
+<!--                                <div class="notif-title-row">-->
+<!--                                    <div class="notif-title">데이터 수집 지연 안내</div>-->
+<!--                                    <span class="notif-tag notif-tag-system">시스템</span>-->
+<!--                                </div>-->
+<!--                                <div class="notif-message">-->
+<!--                                    나스닥 실시간 데이터 공급사의 장애로 인해 금일 종가 반영이 최대 5분 지연될 수 있습니다.-->
+<!--                                </div>-->
+<!--                                <div class="notif-meta">어제 · 공급사: DemoFeed</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="notif-item" data-type="strategy">-->
+<!--                            <div class="notif-dot read"></div>-->
+<!--                            <div class="notif-content">-->
+<!--                                <div class="notif-title-row">-->
+<!--                                    <div class="notif-title">전략 성과 리포트 업데이트</div>-->
+<!--                                    <span class="notif-tag notif-tag-strategy">전략</span>-->
+<!--                                </div>-->
+<!--                                <div class="notif-message">-->
+<!--                                    지난 1개월 롱숏 전략의 샤프지수, 승률, 월간 수익률 리포트가 생성되었습니다.-->
+<!--                                </div>-->
+<!--                                <div class="notif-meta">3일 전 · 백테스트 엔진</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
+<!--        </main>-->
+<!--    </div>-->
+
+<!--    <script>-->
+<!--        const DASHBOARD_META_URL = 'http://127.0.0.1:5000/api/last-position';-->
+<!--        const CHART_FALLBACK_POINTS = 12;-->
+<!--        let dashboardMetaCache = null;-->
+
+<!--        function generateDemoLineData(points, base, noise = 5) {-->
+<!--            const data = [];-->
+<!--            let value = base;-->
+<!--            for (let i = 0; i < points; i++) {-->
+<!--                value += (Math.random() - 0.5) * noise;-->
+<!--                data.push(Number(value.toFixed(3)));-->
+<!--            }-->
+<!--            return data;-->
+<!--        }-->
+
+<!--        async function loadDashboardMeta() {-->
+<!--            if (dashboardMetaCache !== null) return dashboardMetaCache;-->
+<!--            try {-->
+<!--                const res = await fetch(DASHBOARD_META_URL, { cache: 'no-store' });-->
+<!--                if (!res.ok) throw new Error('메타데이터 응답 오류');-->
+<!--                dashboardMetaCache = await res.json();-->
+<!--            } catch (error) {-->
+<!--                console.warn('대시보드 메타데이터 로드 실패:', error);-->
+<!--                dashboardMetaCache = null;-->
+<!--            }-->
+<!--            return dashboardMetaCache;-->
+<!--        }-->
+
+<!--        function buildPositionMeta(value) {-->
+<!--            const raw = (value ?? '').toString().trim();-->
+<!--            const normalized = raw.toUpperCase();-->
+<!--            const statusMap = {-->
+<!--                LONG: { label: 'LONG', cls: 'tag position-tag tag-long' },-->
+<!--                SHORT: { label: 'SHORT', cls: 'tag position-tag tag-short' },-->
+<!--                NO: { label: 'NO', cls: 'tag position-tag tag-neutral' }-->
+<!--            };-->
+<!--            return statusMap[normalized] || {-->
+<!--                label: raw || '데이터 없음',-->
+<!--                cls: 'tag position-tag tag-neutral'-->
+<!--            };-->
+<!--        }-->
+
+<!--        function initPositionWidgets(meta) {-->
+<!--            const todayEl = document.getElementById('positionValue');-->
+<!--            const prevEl = document.getElementById('positionPrevValue');-->
+<!--            const todayMeta = buildPositionMeta(meta?.last_position);-->
+<!--            if (todayEl) {-->
+<!--                todayEl.textContent = todayMeta.label;-->
+<!--            }-->
+<!--            if (prevEl) {-->
+<!--                const prevMeta = buildPositionMeta(meta?.previous_position);-->
+<!--                prevEl.className = prevMeta.cls;-->
+<!--                prevEl.textContent = prevMeta.label;-->
+<!--            }-->
+<!--        }-->
+
+<!--        function initEntryPriceMetric(meta) {-->
+<!--            const valueEl = document.getElementById('entryPriceValue');-->
+<!--            if (!valueEl) return;-->
+<!--            const value = meta?.entry_price;-->
+<!--            if (value === null || value === undefined || value === '') {-->
+<!--                valueEl.textContent = '데이터 없음';-->
+<!--                return;-->
+<!--            }-->
+<!--            const num = Number(value);-->
+<!--            if (Number.isFinite(num)) {-->
+<!--                valueEl.textContent = num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });-->
+<!--            } else {-->
+<!--                valueEl.textContent = String(value);-->
+<!--            }-->
+<!--        }-->
+
+<!--        function buildMetaChartData(meta) {-->
+<!--            if (!meta) return null;-->
+<!--            const labels = Array.isArray(meta.workday_labels) ? meta.workday_labels : [];-->
+<!--            const actualSeries = Array.isArray(meta.actual_close_series) ? meta.actual_close_series : [];-->
+<!--            const trendSeries = Array.isArray(meta.trend_series) ? meta.trend_series : [];-->
+<!--            const length = Math.min(labels.length, actualSeries.length, trendSeries.length);-->
+<!--            if (!length) return null;-->
+<!--            const actualData = actualSeries.slice(-length).map(Number);-->
+<!--            const trendData = trendSeries.slice(-length).map(Number);-->
+<!--            if (actualData.some(v => !Number.isFinite(v)) || trendData.some(v => !Number.isFinite(v))) {-->
+<!--                return null;-->
+<!--            }-->
+<!--            return {-->
+<!--                labels: labels.slice(-length),-->
+<!--                actualData,-->
+<!--                trendData-->
+<!--            };-->
+<!--        }-->
+
+<!--        function buildFallbackChartData() {-->
+<!--            const labels = [];-->
+<!--            const today = new Date();-->
+<!--            for (let i = CHART_FALLBACK_POINTS - 1; i >= 0; i&#45;&#45;) {-->
+<!--                const d = new Date(today);-->
+<!--                d.setMonth(today.getMonth() - i);-->
+<!--                const yy = String(d.getFullYear()).slice(2);-->
+<!--                const mm = String(d.getMonth() + 1).padStart(2, '0');-->
+<!--                labels.push(`${yy}/${mm}`);-->
+<!--            }-->
+<!--            const returnsCount = labels.length;-->
+<!--            const baseActual = [];-->
+<!--            const baseTrend = [];-->
+<!--            let actualValue = 100;-->
+<!--            let trendValue = 100;-->
+<!--            for (let i = 0; i < returnsCount; i++) {-->
+<!--                actualValue *= 1 + (Math.random() - 0.5) * 0.04;-->
+<!--                trendValue *= 1 + (Math.random() - 0.5) * 0.06;-->
+<!--                baseActual.push(Number(actualValue.toFixed(2)));-->
+<!--                baseTrend.push(Number(trendValue.toFixed(2)));-->
+<!--            }-->
+<!--            return {-->
+<!--                labels,-->
+<!--                actualData: baseActual,-->
+<!--                trendData: baseTrend-->
+<!--            };-->
+<!--        }-->
+
+<!--        function calculateReturns(series) {-->
+<!--            const returns = [];-->
+<!--            for (let i = 1; i < series.length; i++) {-->
+<!--                const prev = series[i - 1];-->
+<!--                const curr = series[i];-->
+<!--                if (!Number.isFinite(prev) || !Number.isFinite(curr) || prev === 0) continue;-->
+<!--                returns.push((curr - prev) / prev);-->
+<!--            }-->
+<!--            return returns;-->
+<!--        }-->
+
+<!--        function updatePerformanceMetrics(series) {-->
+<!--            const sharpeEl = document.getElementById('sharpeMetric');-->
+<!--            const annRetEl = document.getElementById('annReturnMetric');-->
+<!--            const mddEl = document.getElementById('mddMetric');-->
+<!--            if (!sharpeEl || !annRetEl || !mddEl) return;-->
+
+<!--            const setPlaceholders = () => {-->
+<!--                sharpeEl.textContent = '-';-->
+<!--                annRetEl.textContent = '-';-->
+<!--                mddEl.textContent = '-';-->
+<!--            };-->
+
+<!--            if (!series || series.length < 2) {-->
+<!--                setPlaceholders();-->
+<!--                return;-->
+<!--            }-->
+
+<!--            const returns = calculateReturns(series);-->
+<!--            if (!returns.length) {-->
+<!--                setPlaceholders();-->
+<!--                return;-->
+<!--            }-->
+
+<!--            const mean = arr => arr.reduce((a, b) => a + b, 0) / arr.length;-->
+<!--            const std = arr => {-->
+<!--                const m = mean(arr);-->
+<!--                const variance = arr.reduce((sum, val) => sum + (val - m) ** 2, 0) / Math.max(arr.length - 1, 1);-->
+<!--                return Math.sqrt(variance);-->
+<!--            };-->
+<!--            const calcSharpe = (retArr, periodsPerYear = 252) => {-->
+<!--                const m = mean(retArr);-->
+<!--                const s = std(retArr) || 1e-9;-->
+<!--                return (m / s) * Math.sqrt(periodsPerYear);-->
+<!--            };-->
+<!--            const calcAnnualReturn = (retArr, periodsPerYear = 252) => {-->
+<!--                const cumulative = retArr.reduce((prod, r) => prod * (1 + r), 1);-->
+<!--                const years = retArr.length / periodsPerYear;-->
+<!--                if (years <= 0) return 0;-->
+<!--                return Math.pow(cumulative, 1 / years) - 1;-->
+<!--            };-->
+<!--            const calcMdd = data => {-->
+<!--                let peak = data[0];-->
+<!--                let mdd = 0;-->
+<!--                for (let i = 1; i < data.length; i++) {-->
+<!--                    if (data[i] > peak) peak = data[i];-->
+<!--                    const dd = (data[i] - peak) / peak;-->
+<!--                    if (dd < mdd) mdd = dd;-->
+<!--                }-->
+<!--                return mdd;-->
+<!--            };-->
+
+<!--            const sharpe = calcSharpe(returns);-->
+<!--            const annRet = calcAnnualReturn(returns);-->
+<!--            const mdd = calcMdd(series);-->
+
+<!--            sharpeEl.textContent = sharpe.toFixed(2);-->
+<!--            annRetEl.classList.remove('positive', 'negative');-->
+<!--            mddEl.classList.remove('positive', 'negative');-->
+<!--            annRetEl.textContent = (annRet * 100).toFixed(1) + '%';-->
+<!--            mddEl.textContent = (mdd * 100).toFixed(1) + '%';-->
+
+<!--            annRetEl.classList.toggle('positive', annRet >= 0);-->
+<!--            annRetEl.classList.toggle('negative', annRet < 0);-->
+<!--            mddEl.classList.toggle('negative', mdd < 0);-->
+<!--            mddEl.classList.toggle('positive', mdd >= 0);-->
+<!--        }-->
+
+<!--        function renderActualVsTrendChart(chartData) {-->
+<!--            const ctx = document.getElementById('spComparisonChart').getContext('2d');-->
+<!--            new Chart(ctx, {-->
+<!--                type: 'line',-->
+<!--                data: {-->
+<!--                    labels: chartData.labels,-->
+<!--                    datasets: [-->
+<!--                        {-->
+<!--                            label: '실제 종가 (99999)',-->
+<!--                            data: chartData.actualData,-->
+<!--                            borderWidth: 2,-->
+<!--                            tension: 0.3-->
+<!--                        },-->
+<!--                        {-->
+<!--                            label: '추세 예측값 (정렬)',-->
+<!--                            data: chartData.trendData,-->
+<!--                            borderWidth: 2,-->
+<!--                            borderDash: [6, 4],-->
+<!--                            tension: 0.3-->
+<!--                        }-->
+<!--                    ]-->
+<!--                },-->
+<!--                options: {-->
+<!--                    responsive: true,-->
+<!--                    maintainAspectRatio: false,-->
+<!--                    interaction: { mode: 'index', intersect: false },-->
+<!--                    plugins: {-->
+<!--                        legend: { labels: { boxWidth: 10 } },-->
+<!--                        tooltip: {-->
+<!--                            callbacks: {-->
+<!--                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`-->
+<!--                            }-->
+<!--                        }-->
+<!--                    },-->
+<!--                    scales: {-->
+<!--                        y: { title: { display: true, text: '값' } }-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--            updatePerformanceMetrics(chartData.actualData);-->
+<!--        }-->
+
+<!--        function initActualVsTrendChart(meta) {-->
+<!--            const chartData = buildMetaChartData(meta) || buildFallbackChartData();-->
+<!--            renderActualVsTrendChart(chartData);-->
+<!--        }-->
+
+<!--        // 롱/숏 포트폴리오 더미 데이터-->
+<!--        const longDemo = [-->
+<!--            { ticker: 'AAPL', prob: 0.82, ret5: 0.043, weight: 0.2 },-->
+<!--            { ticker: 'MSFT', prob: 0.78, ret5: 0.037, weight: 0.18 },-->
+<!--            { ticker: 'NVDA', prob: 0.75, ret5: 0.052, weight: 0.22 },-->
+<!--            { ticker: 'AMZN', prob: 0.70, ret5: 0.033, weight: 0.15 }-->
+<!--        ];-->
+
+<!--        const shortDemo = [-->
+<!--            { ticker: 'TSLA', prob: 0.29, ret5: -0.036, weight: 0.15 },-->
+<!--            { ticker: 'META', prob: 0.34, ret5: -0.028, weight: 0.12 },-->
+<!--            { ticker: 'NFLX', prob: 0.31, ret5: -0.032, weight: 0.1 },-->
+<!--            { ticker: 'BIDU', prob: 0.27, ret5: -0.041, weight: 0.08 }-->
+<!--        ];-->
+
+<!--        function fillPortfolioTables() {-->
+<!--            const longBody = document.getElementById('long-table-body');-->
+<!--            const shortBody = document.getElementById('short-table-body');-->
+<!--            longBody.innerHTML = '';-->
+<!--            shortBody.innerHTML = '';-->
+
+<!--            longDemo.forEach(row => {-->
+<!--                const tr = document.createElement('tr');-->
+<!--                tr.innerHTML = `-->
+<!--                    <td><span class="tag tag-long">LONG</span> ${row.ticker}</td>-->
+<!--                    <td class="prob-high">${(row.prob*100).toFixed(1)}%</td>-->
+<!--                    <td style="color:#15803d;font-weight:600;">+${(row.ret5*100).toFixed(1)}%</td>-->
+<!--                    <td>${(row.weight*100).toFixed(0)}%</td>-->
+<!--                `;-->
+<!--                longBody.appendChild(tr);-->
+<!--            });-->
+
+<!--            shortDemo.forEach(row => {-->
+<!--                const tr = document.createElement('tr');-->
+<!--                tr.innerHTML = `-->
+<!--                    <td><span class="tag tag-short">SHORT</span> ${row.ticker}</td>-->
+<!--                    <td class="prob-low">${(row.prob*100).toFixed(1)}%</td>-->
+<!--                    <td style="color:#b91c1c;font-weight:600;">${(row.ret5*100).toFixed(1)}%</td>-->
+<!--                    <td>${(row.weight*100).toFixed(0)}%</td>-->
+<!--                `;-->
+<!--                shortBody.appendChild(tr);-->
+<!--            });-->
+<!--        }-->
+
+<!--        // 🔥 세로 막대 Heatmap-->
+<!--        function initHeatmap() {-->
+<!--            const container = document.getElementById('heatmap-list');-->
+<!--            container.innerHTML = '';-->
+
+<!--            const tickers = [-->
+<!--                'AAPL','MSFT','NVDA','AMZN','TSLA','META','GOOG','NFLX','ADBE','INTC',-->
+<!--                'CSCO','AMD','AVGO','PEP','COST','QCOM','TXN','AMAT','PYPL','MRNA',-->
+<!--                'BIDU','JD','SHOP','CRWD','ZM','DOCU','SNOW','ABNB','UBER','LYFT'-->
+<!--            ];-->
+
+<!--            const data = tickers.map(t => ({-->
+<!--                ticker: t,-->
+<!--                prob: Math.random()-->
+<!--            })).sort((a, b) => b.prob - a.prob);-->
+
+<!--            data.forEach(item => {-->
+<!--                const col = document.createElement('div');-->
+<!--                col.className = 'hm-col';-->
+
+<!--                const wrapper = document.createElement('div');-->
+<!--                wrapper.className = 'hm-bar-vertical-wrapper';-->
+
+<!--                const fill = document.createElement('div');-->
+<!--                fill.className = 'hm-bar-vertical-fill';-->
+<!--                fill.style.height = `${(item.prob * 100).toFixed(0)}%`;-->
+
+<!--                const hue = 120 * item.prob;  // 0=빨강, 1=초록-->
+<!--                fill.style.backgroundColor = `hsl(${hue}, 75%, 55%)`;-->
+
+<!--                wrapper.appendChild(fill);-->
+
+<!--                const tickerLabel = document.createElement('div');-->
+<!--                tickerLabel.className = 'hm-col-ticker';-->
+<!--                tickerLabel.textContent = item.ticker;-->
+
+<!--                col.title = `${item.ticker} · 상승확률 ${(item.prob * 100).toFixed(1)}%`;-->
+
+<!--                col.appendChild(wrapper);-->
+<!--                col.appendChild(tickerLabel);-->
+
+<!--                container.appendChild(col);-->
+<!--            });-->
+<!--        }-->
+
+<!--        // OHLC + Volume 더미 데이터-->
+<!--        function initStockCharts() {-->
+<!--            const labels = [];-->
+<!--            const today = new Date();-->
+<!--            for (let i = 9; i >= 0; i&#45;&#45;) {-->
+<!--                const d = new Date(today);-->
+<!--                d.setDate(today.getDate() - i);-->
+<!--                labels.push(`${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`);-->
+<!--            }-->
+
+<!--            function buildOhlcData(base) {-->
+<!--                const close = generateDemoLineData(labels.length, base, 3);-->
+<!--                const high = close.map(v => v + 2);-->
+<!--                const low  = close.map(v => v - 2);-->
+<!--                const open = close.map((v, idx) => idx === 0 ? v : close[idx-1]);-->
+<!--                const volume = generateDemoLineData(labels.length, 8, 2).map(v => Math.abs(v * 1000000));-->
+<!--                return { labels, open, high, low, close, volume };-->
+<!--            }-->
+
+<!--            const aapl = buildOhlcData(180);-->
+<!--            const msft = buildOhlcData(260);-->
+
+<!--            function createOhlcChart(canvasId, data) {-->
+<!--                const ctx = document.getElementById(canvasId).getContext('2d');-->
+<!--                new Chart(ctx, {-->
+<!--                    type: 'line',-->
+<!--                    data: {-->
+<!--                        labels: data.labels,-->
+<!--                        datasets: [-->
+<!--                            {-->
+<!--                                label: 'Close (가상)',-->
+<!--                                data: data.close,-->
+<!--                                borderWidth: 2,-->
+<!--                                tension: 0.3-->
+<!--                            },-->
+<!--                            {-->
+<!--                                label: 'High (가상)',-->
+<!--                                data: data.high,-->
+<!--                                borderWidth: 1,-->
+<!--                                borderDash: [4, 3],-->
+<!--                                tension: 0.3-->
+<!--                            },-->
+<!--                            {-->
+<!--                                label: 'Low (가상)',-->
+<!--                                data: data.low,-->
+<!--                                borderWidth: 1,-->
+<!--                                borderDash: [4, 3],-->
+<!--                                tension: 0.3-->
+<!--                            }-->
+<!--                        ]-->
+<!--                    },-->
+<!--                    options: {-->
+<!--                        responsive: true,-->
+<!--                        maintainAspectRatio: false,-->
+<!--                        plugins: {-->
+<!--                            legend: { labels: { boxWidth: 10 } },-->
+<!--                            title: { display: false }-->
+<!--                        },-->
+<!--                        scales: {-->
+<!--                            y: { title: { display: true, text: '가격(가상)' } }-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+
+<!--            function createVolumeChart(canvasId, data) {-->
+<!--                const ctx = document.getElementById(canvasId).getContext('2d');-->
+<!--                new Chart(ctx, {-->
+<!--                    type: 'bar',-->
+<!--                    data: {-->
+<!--                        labels: data.labels,-->
+<!--                        datasets: [-->
+<!--                            {-->
+<!--                                label: 'Volume (가상)',-->
+<!--                                data: data.volume,-->
+<!--                                borderWidth: 1-->
+<!--                            }-->
+<!--                        ]-->
+<!--                    },-->
+<!--                    options: {-->
+<!--                        responsive: true,-->
+<!--                        maintainAspectRatio: false,-->
+<!--                        plugins: {-->
+<!--                            legend: { labels: { boxWidth: 10 } }-->
+<!--                        },-->
+<!--                        scales: {-->
+<!--                            y: {-->
+<!--                                title: { display: true, text: '거래량(가상)' },-->
+<!--                                ticks: {-->
+<!--                                    callback: function(value) {-->
+<!--                                        const m = value / 1000000;-->
+<!--                                        return m.toFixed(1) + 'M';-->
+<!--                                    }-->
+<!--                                }-->
+<!--                            }-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+
+<!--            createOhlcChart('ohlcChartAAPL', aapl);-->
+<!--            createOhlcChart('ohlcChartMSFT', msft);-->
+<!--            createVolumeChart('volumeChartAAPL', aapl);-->
+<!--            createVolumeChart('volumeChartMSFT', msft);-->
+<!--        }-->
+
+<!--        // 네비게이션 / 탭 제어-->
+<!--        function initNavigation() {-->
+<!--            const navButtons = document.querySelectorAll('.nav-btn');-->
+<!--            const sections = document.querySelectorAll('.page-section');-->
+
+<!--            navButtons.forEach(btn => {-->
+<!--                btn.addEventListener('click', () => {-->
+<!--                    navButtons.forEach(b => b.classList.remove('active'));-->
+<!--                    btn.classList.add('active');-->
+
+<!--                    const targetId = btn.getAttribute('data-target');-->
+<!--                    sections.forEach(sec => {-->
+<!--                        sec.classList.toggle('active', sec.id === targetId);-->
+<!--                    });-->
+<!--                });-->
+<!--            });-->
+
+<!--            const stockTabs = document.querySelectorAll('.stock-tab-btn');-->
+<!--            const aaplSec = document.getElementById('stock-charts-AAPL');-->
+<!--            const msftSec = document.getElementById('stock-charts-MSFT');-->
+
+<!--            stockTabs.forEach(btn => {-->
+<!--                btn.addEventListener('click', () => {-->
+<!--                    stockTabs.forEach(b => b.classList.remove('active'));-->
+<!--                    btn.classList.add('active');-->
+<!--                    const stock = btn.getAttribute('data-stock');-->
+<!--                    if (stock === 'AAPL') {-->
+<!--                        aaplSec.classList.remove('hidden');-->
+<!--                        msftSec.classList.add('hidden');-->
+<!--                    } else {-->
+<!--                        msftSec.classList.remove('hidden');-->
+<!--                        aaplSec.classList.add('hidden');-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+
+<!--            // 알림센터 필터-->
+<!--            const chips = document.querySelectorAll('.notif-chip');-->
+<!--            const notifItems = document.querySelectorAll('.notif-item');-->
+
+<!--            chips.forEach(chip => {-->
+<!--                chip.addEventListener('click', () => {-->
+<!--                    chips.forEach(c => c.classList.remove('active'));-->
+<!--                    chip.classList.add('active');-->
+<!--                    const filter = chip.getAttribute('data-filter');-->
+
+<!--                    notifItems.forEach(item => {-->
+<!--                        const type = item.getAttribute('data-type');-->
+<!--                        if (filter === 'all' || filter === type) {-->
+<!--                            item.style.display = 'flex';-->
+<!--                        } else {-->
+<!--                            item.style.display = 'none';-->
+<!--                        }-->
+<!--                    });-->
+<!--                });-->
+<!--            });-->
+
+<!--            // 알림 클릭 시 읽음 처리-->
+<!--            notifItems.forEach(item => {-->
+<!--                item.addEventListener('click', () => {-->
+<!--                    const dot = item.querySelector('.notif-dot');-->
+<!--                    dot.classList.remove('unread');-->
+<!--                    dot.classList.add('read');-->
+<!--                });-->
+<!--            });-->
+<!--        }-->
+
+<!--        // 로그인 버튼 처리-->
+<!--        function initLogin() {-->
+<!--            const loginBtn = document.getElementById('login-btn');-->
+<!--            const loginPage = document.getElementById('login-page');-->
+<!--            const app = document.getElementById('app');-->
+<!--            const userPill = document.getElementById('user-pill');-->
+<!--            const emailInput = document.getElementById('email-input');-->
+
+<!--            loginBtn.addEventListener('click', () => {-->
+<!--                const email = emailInput.value || 'demo@alpha.ai';-->
+<!--                userPill.textContent = email;-->
+<!--                loginPage.classList.add('hidden');-->
+<!--                app.classList.remove('hidden');-->
+<!--            });-->
+<!--        }-->
+
+<!--        async function bootstrapDashboard() {-->
+<!--            initLogin();-->
+<!--            initNavigation();-->
+<!--            const meta = await loadDashboardMeta();-->
+<!--            initPositionWidgets(meta || {});-->
+<!--            initEntryPriceMetric(meta || {});-->
+<!--            initActualVsTrendChart(meta);-->
+<!--            fillPortfolioTables();-->
+<!--            initStockCharts();-->
+<!--            initHeatmap();-->
+<!--        }-->
+
+<!--        window.addEventListener('load', () => {-->
+<!--            bootstrapDashboard();-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>FICC_채권운용부 전략펀드</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --accent: #2563eb;
+            --accent-soft: #dbeafe;
+            --text-main: #1f2933;
+            --text-sub: #6b7280;
+            --border-soft: #e5e7eb;
+            --danger: #ef4444;
+            --success: #16a34a;
+            --shadow-soft: 0 12px 25px rgba(15, 23, 42, 0.06);
+            --radius-lg: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 로그인 페이지 */
+        #login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #e0f2fe, #f5f7fb 60%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent-soft);
+        }
+
+        .login-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 999px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            background: #1d4ed8;
+            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.45);
+        }
+
+        .login-helper {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .login-helper span {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* 앱 전체 레이아웃 */
+        #app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .brand-text-main {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .brand-text-sub {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: none;
+            background: transparent;
+            color: var(--text-sub);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .nav-btn.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .user-pill {
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        main {
+            padding: 18px 24px 26px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 16px 16px 18px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .metric-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .metric-subtext {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #ecfdf3;
+            color: var(--success);
+            margin-left: 6px;
+        }
+
+        .metric-badge.neg {
+            background: #fef2f2;
+            color: var(--danger);
+        }
+
+        .chart-container {
+            margin-top: 8px;
+            height: 260px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 4px 0 10px;
+        }
+
+        .subsection-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #f3f4f6;
+            text-align: left;
+        }
+
+        th {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .tag-long {
+            background: #ecfdf3;
+            color: #15803d;
+        }
+
+        .tag-short {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .tag-neutral {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .position-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+        }
+
+        .prob-high {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .prob-low {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        /* Heatmap */
+        .heatmap-grid {
+            margin-top: 10px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .hm-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 26px;
+            flex-shrink: 0;
+            font-size: 10px;
+        }
+
+        .hm-bar-vertical-wrapper {
+            width: 100%;
+            height: 110px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hm-bar-vertical-fill {
+            width: 100%;
+            border-radius: 999px 999px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .hm-col-ticker {
+            margin-top: 4px;
+            font-size: 10px;
+            color: var(--text-main);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .heatmap-legend {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--text-sub);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 4px;
+        }
+
+        .heatmap-legend-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ef4444, #fbbf24, #22c55e);
+        }
+
+        .heatmap-legend-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .heatmap-legend-labels span {
+            font-size: 10px;
+        }
+
+        /* 상단 지표 */
+        .metric-summary-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            margin-bottom: 6px;
+        }
+
+        .metric-summary-item {
+            flex: 1 1 120px;
+            min-width: 120px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .metric-summary-label {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-bottom: 2px;
+        }
+
+        .metric-summary-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .metric-summary-value.positive {
+            color: #15803d;
+        }
+
+        .metric-summary-value.negative {
+            color: #b91c1c;
+        }
+
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            main {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 로그인 페이지 -->
+    <div id="login-page">
+        <div class="login-card">
+            <div class="login-logo">FICC_채권운용부 전략펀드</div>
+            <div class="login-subtitle">
+                TF, MACD, RSI 기반 전략펀드<br />
+                데모 로그인을 통해 화면 구성을 확인해보세요.
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">이메일</label>
+                <input id="email-input" type="email" class="form-input" placeholder="you@example.com" value="demo@alpha.ai" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">비밀번호</label>
+                <input id="password-input" type="password" class="form-input" placeholder="••••••••" value="demopass" />
+            </div>
+
+            <button class="login-btn" id="login-btn">로그인</button>
+            <div class="login-helper">
+                실제 인증 없이 <span>데모 모드</span>로 대시보드가 열립니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- 앱 영역 -->
+    <div id="app" class="hidden">
+        <header>
+            <div class="brand">
+                <div class="brand-logo">α</div>
+                <div>
+                    <div class="brand-text-main">채권운용부 전략펀드</div>
+                    <div class="brand-text-sub">2363, 2036</div>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-target="dashboard-section" data-strategy="rsi">RSI 전략</button>
+                <button class="nav-btn" data-target="dashboard-section" data-strategy="macd">MACD 전략</button>
+                <button class="nav-btn" data-target="dashboard-section" data-strategy="tf">TF 전략</button>
+            </nav>
+            <div class="user-pill" id="user-pill">
+                demo@alpha.ai
+            </div>
+        </header>
+
+        <main>
+            <!-- 공통 대시보드 섹션 (전략별로 데이터만 변경) -->
+            <section id="dashboard-section" class="page-section active">
+                <div class="section-title" id="strategy-title">오늘의 전략 요약 · RSI</div>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">금일 포지션</div>
+                            <div class="card-subtitle">계약수: 80</div>
+                        </div>
+                        <div id="positionValue" class="metric-value">데이터 없음</div>
+                        <div class="metric-subtext">
+                            현재 포지션
+                            <span id="positionPrevValue" class="tag tag-neutral position-tag">데이터 없음</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">진입 가격</div>
+                        </div>
+                        <div id="entryPriceValue" class="metric-value">데이터 없음</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">월손익</div>
+                        </div>
+                        <div class="metric-value">
+                            +3.1%
+                            <span class="metric-badge">계약수 80 기준</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">연손익</div>
+                            <div class="card-subtitle">2025년</div>
+                        </div>
+                        <div class="metric-value">
+                            78 / 100
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid" style="margin-top: 16px;">
+                    <div class="card" style="grid-column: span 2; min-width: 260px;">
+                        <div class="card-header">
+                            <div class="card-title">실제 종가 vs 추세 예측값</div>
+                            <div class="card-subtitle">99999 / 정렬 컬럼 기반 차트</div>
+                        </div>
+
+                        <!-- 상단 지표 세 개 -->
+                        <div class="metric-summary-row">
+                            <div class="metric-summary-item">
+                                <div class="metric-summary-label">샤프지수 (전략)</div>
+                                <div id="sharpeMetric" class="metric-summary-value">-</div>
+                            </div>
+                            <div class="metric-summary-item">
+                                <div class="metric-summary-label">연평균 수익률 (전략)</div>
+                                <div id="annReturnMetric" class="metric-summary-value positive">-</div>
+                            </div>
+                            <div class="metric-summary-item">
+                                <div class="metric-summary-label">최대하락폭 MDD (전략)</div>
+                                <div id="mddMetric" class="metric-summary-value negative">-</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="spComparisonChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">롱 포트폴리오 (상승 확률 높은 종목)</div>
+                        </div>
+                        <div class="card-subtitle" style="margin-bottom: 6px;">
+                            prob_up ≥ 0.60 &nbsp;·&nbsp; 변동성 과도 종목 제외
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>티커</th>
+                                    <th>상승확률</th>
+                                    <th>예상수익률(5D)</th>
+                                    <th>비중</th>
+                                </tr>
+                            </thead>
+                            <tbody id="long-table-body">
+                                <!-- JS에서 채움 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">숏 포트폴리오 (하락 확률 높은 종목)</div>
+                        </div>
+                        <div class="card-subtitle" style="margin-bottom: 6px;">
+                            prob_up ≤ 0.40 &nbsp;·&nbsp; 유동성 부족 종목 제외
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>티커</th>
+                                    <th>상승확률</th>
+                                    <th>예상수익률(5D)</th>
+                                    <th>비중</th>
+                                </tr>
+                            </thead>
+                            <tbody id="short-table-body">
+                                <!-- JS에서 채움 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">
+                        <div class="card-title">시장 예측 Heatmap (세로 막대 · Demo)</div>
+                        <div class="card-subtitle">종목별 상승 확률(prob_up)을 높이·색으로 표현</div>
+                    </div>
+
+                    <!-- 세로 막대 Heatmap -->
+                    <div id="heatmap-list" class="heatmap-grid">
+                        <!-- JS에서 생성 -->
+                    </div>
+
+                    <div class="heatmap-legend">
+                        <div class="heatmap-legend-bar"></div>
+                        <div class="heatmap-legend-labels">
+                            <span>낮은 상승확률</span>
+                            <span>중립</span>
+                            <span>높은 상승확률</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://211.232.151.160:5000';
+        const CHART_FALLBACK_POINTS = 12;
+
+        // 전략별 메타 캐시
+        const strategyMetaCache = {};
+        let currentStrategy = 'rsi';
+        let spChartInstance = null;
+
+        function generateDemoLineData(points, base, noise = 5) {
+            const data = [];
+            let value = base;
+            for (let i = 0; i < points; i++) {
+                value += (Math.random() - 0.5) * noise;
+                data.push(Number(value.toFixed(3)));
+            }
+            return data;
+        }
+
+        function getDashboardMetaUrl(strategy) {
+            return `${API_BASE_URL}/api/strategy/${strategy}`;
+        }
+
+        async function loadDashboardMeta(strategy) {
+            const key = strategy || currentStrategy || 'rsi';
+
+            if (strategyMetaCache[key]) return strategyMetaCache[key];
+
+            try {
+                const res = await fetch(getDashboardMetaUrl(key), { cache: 'no-store' });
+                if (!res.ok) throw new Error('메타데이터 응답 오류');
+                const meta = await res.json();
+                strategyMetaCache[key] = meta;
+                return meta;
+            } catch (error) {
+                console.warn(`대시보드 메타데이터 로드 실패 (${key}):`, error);
+                return null;
+            }
+        }
+
+        function buildPositionMeta(value) {
+            const raw = (value ?? '').toString().trim();
+            const normalized = raw.toUpperCase();
+            const statusMap = {
+                LONG: { label: 'LONG', cls: 'tag position-tag tag-long' },
+                SHORT: { label: 'SHORT', cls: 'tag position-tag tag-short' },
+                NO: { label: 'NO', cls: 'tag position-tag tag-neutral' }
+            };
+            return statusMap[normalized] || {
+                label: raw || '데이터 없음',
+                cls: 'tag position-tag tag-neutral'
+            };
+        }
+
+        function initPositionWidgets(meta) {
+            const todayEl = document.getElementById('positionValue');
+            const prevEl = document.getElementById('positionPrevValue');
+            const todayMeta = buildPositionMeta(meta?.last_position);
+            if (todayEl) {
+                todayEl.textContent = todayMeta.label;
+            }
+            if (prevEl) {
+                const prevMeta = buildPositionMeta(meta?.previous_position);
+                prevEl.className = prevMeta.cls;
+                prevEl.textContent = prevMeta.label;
+            }
+        }
+
+        function initEntryPriceMetric(meta) {
+            const valueEl = document.getElementById('entryPriceValue');
+            if (!valueEl) return;
+            const value = meta?.entry_price;
+            if (value === null || value === undefined || value === '') {
+                valueEl.textContent = '데이터 없음';
+                return;
+            }
+            const num = Number(value);
+            if (Number.isFinite(num)) {
+                valueEl.textContent = num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+            } else {
+                valueEl.textContent = String(value);
+            }
+        }
+
+        function buildMetaChartData(meta) {
+            if (!meta) return null;
+            const labels = Array.isArray(meta.workday_labels) ? meta.workday_labels : [];
+            const actualSeries = Array.isArray(meta.actual_close_series) ? meta.actual_close_series : [];
+            const trendSeries = Array.isArray(meta.trend_series) ? meta.trend_series : [];
+            const length = Math.min(labels.length, actualSeries.length, trendSeries.length);
+            if (!length) return null;
+            const actualData = actualSeries.slice(-length).map(Number);
+            const trendData = trendSeries.slice(-length).map(Number);
+            if (actualData.some(v => !Number.isFinite(v)) || trendData.some(v => !Number.isFinite(v))) {
+                return null;
+            }
+            return {
+                labels: labels.slice(-length),
+                actualData,
+                trendData
+            };
+        }
+
+        function buildFallbackChartData() {
+            const labels = [];
+            const today = new Date();
+            for (let i = CHART_FALLBACK_POINTS - 1; i >= 0; i--) {
+                const d = new Date(today);
+                d.setMonth(today.getMonth() - i);
+                const yy = String(d.getFullYear()).slice(2);
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                labels.push(`${yy}/${mm}`);
+            }
+            const returnsCount = labels.length;
+            const baseActual = [];
+            const baseTrend = [];
+            let actualValue = 100;
+            let trendValue = 100;
+            for (let i = 0; i < returnsCount; i++) {
+                actualValue *= 1 + (Math.random() - 0.5) * 0.04;
+                trendValue *= 1 + (Math.random() - 0.5) * 0.06;
+                baseActual.push(Number(actualValue.toFixed(2)));
+                baseTrend.push(Number(trendValue.toFixed(2)));
+            }
+            return {
+                labels,
+                actualData: baseActual,
+                trendData: baseTrend
+            };
+        }
+
+        function calculateReturns(series) {
+            const returns = [];
+            for (let i = 1; i < series.length; i++) {
+                const prev = series[i - 1];
+                const curr = series[i];
+                if (!Number.isFinite(prev) || !Number.isFinite(curr) || prev === 0) continue;
+                returns.push((curr - prev) / prev);
+            }
+            return returns;
+        }
+
+        function updatePerformanceMetrics(series) {
+            const sharpeEl = document.getElementById('sharpeMetric');
+            const annRetEl = document.getElementById('annReturnMetric');
+            const mddEl = document.getElementById('mddMetric');
+            if (!sharpeEl || !annRetEl || !mddEl) return;
+
+            const setPlaceholders = () => {
+                sharpeEl.textContent = '-';
+                annRetEl.textContent = '-';
+                mddEl.textContent = '-';
+            };
+
+            if (!series || series.length < 2) {
+                setPlaceholders();
+                return;
+            }
+
+            const returns = calculateReturns(series);
+            if (!returns.length) {
+                setPlaceholders();
+                return;
+            }
+
+            const mean = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+            const std = arr => {
+                const m = mean(arr);
+                const variance = arr.reduce((sum, val) => sum + (val - m) ** 2, 0) / Math.max(arr.length - 1, 1);
+                return Math.sqrt(variance);
+            };
+            const calcSharpe = (retArr, periodsPerYear = 252) => {
+                const m = mean(retArr);
+                const s = std(retArr) || 1e-9;
+                return (m / s) * Math.sqrt(periodsPerYear);
+            };
+            const calcAnnualReturn = (retArr, periodsPerYear = 252) => {
+                const cumulative = retArr.reduce((prod, r) => prod * (1 + r), 1);
+                const years = retArr.length / periodsPerYear;
+                if (years <= 0) return 0;
+                return Math.pow(cumulative, 1 / years) - 1;
+            };
+            const calcMdd = data => {
+                let peak = data[0];
+                let mdd = 0;
+                for (let i = 1; i < data.length; i++) {
+                    if (data[i] > peak) peak = data[i];
+                    const dd = (data[i] - peak) / peak;
+                    if (dd < mdd) mdd = dd;
+                }
+                return mdd;
+            };
+
+            const sharpe = calcSharpe(returns);
+            const annRet = calcAnnualReturn(returns);
+            const mdd = calcMdd(series);
+
+            sharpeEl.textContent = sharpe.toFixed(2);
+            annRetEl.classList.remove('positive', 'negative');
+            mddEl.classList.remove('positive', 'negative');
+            annRetEl.textContent = (annRet * 100).toFixed(1) + '%';
+            mddEl.textContent = (mdd * 100).toFixed(1) + '%';
+
+            annRetEl.classList.toggle('positive', annRet >= 0);
+            annRetEl.classList.toggle('negative', annRet < 0);
+            mddEl.classList.toggle('negative', mdd < 0);
+            mddEl.classList.toggle('positive', mdd >= 0);
+        }
+
+        function renderActualVsTrendChart(chartData) {
+            const ctx = document.getElementById('spComparisonChart').getContext('2d');
+            if (spChartInstance) {
+                spChartInstance.destroy();
+            }
+            spChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: '실제 종가 (99999)',
+                            data: chartData.actualData,
+                            borderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: '추세 예측값 (정렬)',
+                            data: chartData.trendData,
+                            borderWidth: 2,
+                            borderDash: [6, 4],
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { boxWidth: 10 } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: '값' } }
+                    }
+                }
+            });
+            updatePerformanceMetrics(chartData.actualData);
+        }
+
+        function initActualVsTrendChart(meta) {
+            const chartData = buildMetaChartData(meta) || buildFallbackChartData();
+            renderActualVsTrendChart(chartData);
+        }
+
+        // 롱/숏 포트폴리오 더미 데이터 (전략 공통 Demo)
+        const longDemo = [
+            { ticker: 'AAPL', prob: 0.82, ret5: 0.043, weight: 0.2 },
+            { ticker: 'MSFT', prob: 0.78, ret5: 0.037, weight: 0.18 },
+            { ticker: 'NVDA', prob: 0.75, ret5: 0.052, weight: 0.22 },
+            { ticker: 'AMZN', prob: 0.70, ret5: 0.033, weight: 0.15 }
+        ];
+
+        const shortDemo = [
+            { ticker: 'TSLA', prob: 0.29, ret5: -0.036, weight: 0.15 },
+            { ticker: 'META', prob: 0.34, ret5: -0.028, weight: 0.12 },
+            { ticker: 'NFLX', prob: 0.31, ret5: -0.032, weight: 0.1 },
+            { ticker: 'BIDU', prob: 0.27, ret5: -0.041, weight: 0.08 }
+        ];
+
+        function fillPortfolioTables() {
+            const longBody = document.getElementById('long-table-body');
+            const shortBody = document.getElementById('short-table-body');
+            longBody.innerHTML = '';
+            shortBody.innerHTML = '';
+
+            longDemo.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="tag tag-long">LONG</span> ${row.ticker}</td>
+                    <td class="prob-high">${(row.prob*100).toFixed(1)}%</td>
+                    <td style="color:#15803d;font-weight:600;">+${(row.ret5*100).toFixed(1)}%</td>
+                    <td>${(row.weight*100).toFixed(0)}%</td>
+                `;
+                longBody.appendChild(tr);
+            });
+
+            shortDemo.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="tag tag-short">SHORT</span> ${row.ticker}</td>
+                    <td class="prob-low">${(row.prob*100).toFixed(1)}%</td>
+                    <td style="color:#b91c1c;font-weight:600;">${(row.ret5*100).toFixed(1)}%</td>
+                    <td>${(row.weight*100).toFixed(0)}%</td>
+                `;
+                shortBody.appendChild(tr);
+            });
+        }
+
+        // Heatmap (전략 공통 Demo)
+        function initHeatmap() {
+            const container = document.getElementById('heatmap-list');
+            container.innerHTML = '';
+
+            const tickers = [
+                'AAPL','MSFT','NVDA','AMZN','TSLA','META','GOOG','NFLX','ADBE','INTC',
+                'CSCO','AMD','AVGO','PEP','COST','QCOM','TXN','AMAT','PYPL','MRNA',
+                'BIDU','JD','SHOP','CRWD','ZM','DOCU','SNOW','ABNB','UBER','LYFT'
+            ];
+
+            const data = tickers.map(t => ({
+                ticker: t,
+                prob: Math.random()
+            })).sort((a, b) => b.prob - a.prob);
+
+            data.forEach(item => {
+                const col = document.createElement('div');
+                col.className = 'hm-col';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'hm-bar-vertical-wrapper';
+
+                const fill = document.createElement('div');
+                fill.className = 'hm-bar-vertical-fill';
+                fill.style.height = `${(item.prob * 100).toFixed(0)}%`;
+
+                const hue = 120 * item.prob;  // 0=빨강, 1=초록
+                fill.style.backgroundColor = `hsl(${hue}, 75%, 55%)`;
+
+                wrapper.appendChild(fill);
+
+                const tickerLabel = document.createElement('div');
+                tickerLabel.className = 'hm-col-ticker';
+                tickerLabel.textContent = item.ticker;
+
+                col.title = `${item.ticker} · 상승확률 ${(item.prob * 100).toFixed(1)}%`;
+
+                col.appendChild(wrapper);
+                col.appendChild(tickerLabel);
+
+                container.appendChild(col);
+            });
+        }
+
+        // 네비게이션 / 탭 제어 (전략 전환)
+        function initNavigation() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const strategyTitle = document.getElementById('strategy-title');
+
+            const strategyLabelMap = {
+                rsi: 'RSI',
+                macd: 'MACD',
+                tf: 'TF'
+            };
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const strategy = btn.getAttribute('data-strategy') || 'rsi';
+                    currentStrategy = strategy;
+
+                    // 타이틀 업데이트
+                    const label = strategyLabelMap[strategy] || strategy.toUpperCase();
+                    if (strategyTitle) {
+                        strategyTitle.textContent = `오늘의 전략 요약 · ${label}`;
+                    }
+
+                    const meta = await loadDashboardMeta(strategy);
+                    initPositionWidgets(meta || {});
+                    initEntryPriceMetric(meta || {});
+                    initActualVsTrendChart(meta);
+                });
+            });
+        }
+
+        // 로그인 버튼 처리
+        function initLogin() {
+            const loginBtn = document.getElementById('login-btn');
+            const loginPage = document.getElementById('login-page');
+            const app = document.getElementById('app');
+            const userPill = document.getElementById('user-pill');
+            const emailInput = document.getElementById('email-input');
+
+            loginBtn.addEventListener('click', () => {
+                const email = emailInput.value || 'demo@alpha.ai';
+                userPill.textContent = email;
+                loginPage.classList.add('hidden');
+                app.classList.remove('hidden');
+            });
+        }
+
+        async function bootstrapDashboard() {
+            initLogin();
+            initNavigation();
+            fillPortfolioTables();
+            initHeatmap();
+
+            // 초기 전략: RSI
+            const meta = await loadDashboardMeta('rsi');
+            initPositionWidgets(meta || {});
+            initEntryPriceMetric(meta || {});
+            initActualVsTrendChart(meta);
+        }
+
+        window.addEventListener('load', () => {
+            bootstrapDashboard();
+        });
+    </script>
+</body>
+</html>
